@@ -18,7 +18,8 @@ async fn main() -> io::Result<()> {
             // enabling logger
             .wrap(middleware::Logger::default())
             // registering services
-            .service(todo::list)
+            .service(todo::index)
+            .service(todo::store)
     })
     .bind(("127.0.0.1", 3500))?
     .run()

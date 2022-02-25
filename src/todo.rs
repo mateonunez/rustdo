@@ -1,3 +1,4 @@
+use actix_web::web::{Json};
 use actix_web::HttpResponse;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -48,10 +49,18 @@ impl TodoRequest {
 
 // list 50 last todos `/todos`
 #[get("/todos")]
-pub async fn list() -> HttpResponse {
+pub async fn index() -> HttpResponse {
   let todos = Todos { results: vec![] };
 
   HttpResponse::Ok()
     .content_type("application/json")
     .json(todos)
+}
+
+// create new todo `/todos`
+#[post("/todos")]
+pub async fn store(todo_req: Json<TodoRequest>) -> HttpResponse {
+  HttpResponse::Created()
+    .content_type("application/json")
+    .json(todo_req.to_todo())
 }
