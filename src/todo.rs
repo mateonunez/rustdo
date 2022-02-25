@@ -1,4 +1,4 @@
-use actix_web::web::{Json};
+use actix_web::web::{Json, Path};
 use actix_web::HttpResponse;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -55,6 +55,23 @@ pub async fn index() -> HttpResponse {
   HttpResponse::Ok()
     .content_type("application/json")
     .json(todos)
+}
+
+// retrieve todo `/todos/:id`
+#[get("/todos/{id}")]
+pub async fn show(id: Path<String>) -> HttpResponse {
+  // TODO: retrieve todo by id
+  let todo: Option<Todo> = None;
+
+  match todo {
+    Some(todo) => HttpResponse::Ok()
+      .content_type("application/json")
+      .json(todo),
+    None => HttpResponse::NotFound()
+      .content_type("application/json")
+      .await
+      .unwrap(),
+  }
 }
 
 // create new todo `/todos`

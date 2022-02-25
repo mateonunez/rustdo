@@ -19,6 +19,7 @@ async fn main() -> io::Result<()> {
             .wrap(middleware::Logger::default())
             // registering services
             .service(todo::index)
+            .service(todo::show)
             .service(todo::store)
     })
     .bind(("127.0.0.1", 3500))?
