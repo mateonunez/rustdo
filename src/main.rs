@@ -1,16 +1,24 @@
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+#[macro_use]
+extern crate actix_web;
 
-async fn hello(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {}!", &name)
-}
+use std::{env, io};
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+use actix_web::{middleware, App, HttpServer};
+
+mod response;
+mod todo;
+
+#[actix_rt::main]
+async fn main() -> io::Result<()> {
+    env::set_var("RUST_LOG", "actix_web=debug,actix_server=info");
+    env_logger::init();
+
     HttpServer::new(|| {
         App::new()
-            .route("/", web::get().to(hello))
-            .route("/{name}", web::get().to(hello))
+            // enabling logger
+            .wrap(middleware::Logger::default())
+            // registering services
+            .service(todo::list)
     })
     .bind(("127.0.0.1", 3500))?
     .run()
