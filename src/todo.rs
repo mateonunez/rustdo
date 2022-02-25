@@ -81,3 +81,33 @@ pub async fn store(todo_req: Json<TodoRequest>) -> HttpResponse {
     .content_type("application/json")
     .json(todo_req.to_todo())
 }
+
+// update todo `/todos/:id`
+#[put("/todos/{id}")]
+pub async fn update(id: Path<String>, todo_req: Json<TodoRequest>) -> HttpResponse {
+  // find todo
+  let todo: Option<Todo> = None;
+
+  match todo {
+    Some(todo) => HttpResponse::Ok()
+      .content_type("application/json")
+      .json(todo),
+    None => HttpResponse::NotFound()
+      .content_type("application/json")
+      .await
+      .unwrap(),
+  }
+}
+
+// delete todo `/todos/:id`
+#[delete("/todos/{id}")]
+pub async fn delete(id: Path<String>) -> HttpResponse {
+  // find todo
+  let todo: Option<Todo> = None;
+  // delete it
+
+  HttpResponse::NoContent()
+    .content_type("application/json")
+    .await
+    .unwrap()
+}

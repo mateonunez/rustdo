@@ -21,6 +21,8 @@ async fn main() -> io::Result<()> {
             .service(todo::index)
             .service(todo::show)
             .service(todo::store)
+            .service(todo::update)
+            .service(todo::delete)
     })
     .bind(("127.0.0.1", 3500))?
     .run()
